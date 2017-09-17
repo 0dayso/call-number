@@ -7,6 +7,7 @@
 #include "main_clientDlg.h"
 #include "afxdialogex.h"
 #include "python_support.h"
+#include "AddDialog.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -22,6 +23,25 @@ void list_add_column(int n, WCHAR *s,int wid)
 {
 	if (!g_pdlg)return;
 	g_pdlg->m_list.InsertColumn(n, s, 0, wid);
+}
+
+void clear_list()
+{
+	if (!g_pdlg)return;
+	g_pdlg->m_list.DeleteAllItems();
+}
+
+void list_set_item(int nitm, int nsub, WCHAR *s)
+{
+	if (!g_pdlg)return;
+	if (nsub==0)
+	{
+		g_pdlg->m_list.InsertItem(nitm, s);
+	}
+	else
+	{
+		g_pdlg->m_list.SetItemText(nitm, nsub, s);
+	}
 }
 
 class CAboutDlg : public CDialogEx
@@ -75,6 +95,9 @@ BEGIN_MESSAGE_MAP(Cmain_clientDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDOK, &Cmain_clientDlg::OnBnClickedOk)
 	ON_NOTIFY(LVN_COLUMNCLICK, IDC_LIST3, &Cmain_clientDlg::OnColumnclickList3)
+	ON_BN_CLICKED(IDC_BUTTON1, &Cmain_clientDlg::OnBnClickedButton1)
+	ON_NOTIFY(NM_RCLICK, IDC_LIST3, &Cmain_clientDlg::OnRclickList3)
+	ON_BN_CLICKED(IDC_BUTTON2, &Cmain_clientDlg::OnBnClickedButton2)
 END_MESSAGE_MAP()
 
 
@@ -111,8 +134,15 @@ BOOL Cmain_clientDlg::OnInitDialog()
 
 	// TODO:  在此添加额外的初始化代码
 	g_pdlg = this;
+	DWORD dwStyle = m_list.GetExtendedStyle();
+	dwStyle |= LVS_EX_FULLROWSELECT;//选中某行使整行高亮（只适用与report风格的listctrl）
+	dwStyle |= LVS_EX_GRIDLINES;//网格线（只适用与report风格的listctrl）
+	m_list.SetExtendedStyle(dwStyle); //设置扩展风格
+
 	if (!PyExecA("import autorun"))AfxMessageBox(PyGetStr());
-	REG_EXE_FUN(list_add_column, "#lSl","");
+	REG_EXE_FUN(list_add_column, "#lSl", "");
+	REG_EXE_FUN(clear_list, "#", "");
+	REG_EXE_FUN(list_set_item, "#llS", "");
 
 
 	if (!PyExecA("autorun.get_title()"))AfxMessageBox(PyGetStr());
@@ -186,4 +216,44 @@ void Cmain_clientDlg::OnColumnclickList3(NMHDR *pNMHDR, LRESULT *pResult)
 	str.Format(_T("%d"), pNMLV->iSubItem);
 	//AfxMessageBox(str);
 	*pResult = 0;
+}
+
+
+void Cmain_clientDlg::OnBnClickedButton1()
+{
+	CAddDialog cad;
+	if (cad.DoModal()==IDOK)
+	{
+		PySetStrW(cad.m_name.GetBuffer(), 0);
+		PySetStrW(cad.m_id.GetBuffer(), 1);
+		PySetStrW(cad.m_phone.GetBuffer(), 2);
+		PySetStrW(cad.m_type.GetBuffer(), 3);
+		PyExecA("autorun.new_number()");
+		PyExecA("autorun.refresh()");
+		PyExecA("autorun.print_number()");
+	}
+}
+
+
+void Cmain_clientDlg::OnRclickList3(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+	if (pNMItemActivate->iItem == -1)return;
+	CMenu Menu;
+	Menu.CreatePopupMenu();
+	Menu.AppendMenu(MF_STRING, 1, _T("打印号票"));
+	CPoint pt;
+	::GetCursorPos(&pt);
+	int sel = (int)Menu.TrackPopupMenuEx(TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_RETURNCMD, pt.x, pt.y, this, nullptr);
+	if (sel == 1)
+	{
+		PyExecA("autorun.print_number()");
+	}
+	*pResult = 0;
+}
+
+
+void Cmain_clientDlg::OnBnClickedButton2()
+{
+	PyExecA("autorun.refresh()");
 }

@@ -103,6 +103,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AddDialog.h" />
     <ClInclude Include="main_client.h" />
     <ClInclude Include="main_clientDlg.h" />
     <ClInclude Include="python_support.h" />
@@ -111,6 +112,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AddDialog.cpp" />
     <ClCompile Include="main_client.cpp" />
     <ClCompile Include="main_clientDlg.cpp" />
     <ClCompile Include="python_support.cpp" />

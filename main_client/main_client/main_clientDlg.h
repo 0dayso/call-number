@@ -34,4 +34,7 @@ public:
 	afx_msg void OnBnClickedOk();
 	CListCtrl m_list;
 	afx_msg void OnColumnclickList3(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnBnClickedButton1();
+	afx_msg void OnRclickList3(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnBnClickedButton2();
 };
