@@ -24,3 +24,6 @@ def refresh():
 
 def print_number():
     __main__.msgbox('print number.')
+
+def init_new_day():
+    return cln.init_new_day()

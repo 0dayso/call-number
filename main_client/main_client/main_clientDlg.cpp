@@ -98,6 +98,7 @@ BEGIN_MESSAGE_MAP(Cmain_clientDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON1, &Cmain_clientDlg::OnBnClickedButton1)
 	ON_NOTIFY(NM_RCLICK, IDC_LIST3, &Cmain_clientDlg::OnRclickList3)
 	ON_BN_CLICKED(IDC_BUTTON2, &Cmain_clientDlg::OnBnClickedButton2)
+	ON_BN_CLICKED(IDC_BUTTON3, &Cmain_clientDlg::OnBnClickedButton3)
 END_MESSAGE_MAP()
 
 
@@ -256,4 +257,14 @@ void Cmain_clientDlg::OnRclickList3(NMHDR *pNMHDR, LRESULT *pResult)
 void Cmain_clientDlg::OnBnClickedButton2()
 {
 	PyExecA("autorun.refresh()");
+}
+
+
+void Cmain_clientDlg::OnBnClickedButton3()
+{
+	if (MessageBoxA(m_hWnd,"初始化会清空当前所有记录，并将新号码复位为1，用于新的一天工作开始，被清空数据会存入历史记录。\n\r你确认继续吗？","警告",MB_YESNO)==IDYES)
+	{
+		PyExecA("autorun.init_new_day()");
+		PyExecA("autorun.refresh()");
+	}
 }

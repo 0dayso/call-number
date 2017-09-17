@@ -300,3 +300,8 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+main server/__pycache__/autorun.cpython-34.pyc
+main_client/Release/__pycache__/autorun.cpython-34.pyc
+main server/serialize.dat
+main server/history.dat
+main server/tmp.txt
