@@ -146,7 +146,11 @@ BOOL Cmain_clientDlg::OnInitDialog()
 	REG_EXE_FUN(list_set_item, "#llS", "");
 
 
-	if (!PyExecA("autorun.get_title()"))AfxMessageBox(PyGetStr());
+	if (!PyExecA("autorun.get_title()"))
+	{
+		AfxMessageBox(PyGetStr());
+		PostMessage(WM_CLOSE);
+	}
 	PyExecA("autorun.refresh()");
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
