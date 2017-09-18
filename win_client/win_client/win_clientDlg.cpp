@@ -69,6 +69,7 @@ BEGIN_MESSAGE_MAP(Cwin_clientDlg, CDialogEx)
 	ON_BN_CLICKED(IDOK, &Cwin_clientDlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDC_BUTTON5, &Cwin_clientDlg::OnBnClickedButton5)
 	ON_BN_CLICKED(IDC_BUTTON1, &Cwin_clientDlg::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_BUTTON3, &Cwin_clientDlg::OnBnClickedButton3)
 END_MESSAGE_MAP()
 
 
@@ -196,4 +197,10 @@ void Cwin_clientDlg::OnBnClickedButton1()
 	}
 	m_info = ret;
 	UpdateData(FALSE);
+}
+
+
+void Cwin_clientDlg::OnBnClickedButton3()
+{
+	// TODO:  在此添加控件通知处理程序代码
 }
