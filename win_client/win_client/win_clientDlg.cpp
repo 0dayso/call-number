@@ -51,6 +51,7 @@ END_MESSAGE_MAP()
 
 Cwin_clientDlg::Cwin_clientDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(Cwin_clientDlg::IDD, pParent)
+	, m_info(_T(""))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -58,6 +59,7 @@ Cwin_clientDlg::Cwin_clientDlg(CWnd* pParent /*=NULL*/)
 void Cwin_clientDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Text(pDX, IDC_EDIT1, m_info);
 }
 
 BEGIN_MESSAGE_MAP(Cwin_clientDlg, CDialogEx)
@@ -66,6 +68,7 @@ BEGIN_MESSAGE_MAP(Cwin_clientDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDOK, &Cwin_clientDlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDC_BUTTON5, &Cwin_clientDlg::OnBnClickedButton5)
+	ON_BN_CLICKED(IDC_BUTTON1, &Cwin_clientDlg::OnBnClickedButton1)
 END_MESSAGE_MAP()
 
 
@@ -166,7 +169,31 @@ void Cwin_clientDlg::OnBnClickedOk()
 void Cwin_clientDlg::OnBnClickedButton5()
 {
 	CDlgSetting cds;
-	if (cds.DoModal()==IDOK)
+	PyEvalA("autorun.g_ip");
+	cds.m_ip = PyGetStr();
+	PyEvalA("autorun.g_win_no");
+	cds.m_win_no = PyGetStr();
+	PyEvalA("autorun.g_types");
+	cds.m_types = PyGetStr();
+	if (cds.DoModal() == IDOK)
 	{
+		PySetStrW(cds.m_ip.GetBuffer(), 0);
+		PySetStrW(cds.m_win_no.GetBuffer(), 1);
+		PySetStrW(cds.m_types.GetBuffer(), 2);
+		PyExecA("autorun.save()");
 	}
+}
+
+
+void Cwin_clientDlg::OnBnClickedButton1()
+{
+	PyEvalA("autorun.call_number()");
+	CString ret= PyGetStr();
+	if (ret==_T(""))
+	{
+		AfxMessageBox(_T("请完成当前任务再叫下一号码。"));
+		return;
+	}
+	m_info = ret;
+	UpdateData(FALSE);
 }
