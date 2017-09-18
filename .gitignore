@@ -306,3 +306,4 @@ main server/serialize.dat
 main server/history.dat
 main server/tmp.txt
 *.tlog
+main_client/Release/main_client.exe
