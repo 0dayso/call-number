@@ -6,6 +6,8 @@
 #include "win_client.h"
 #include "win_clientDlg.h"
 #include "afxdialogex.h"
+#include "python_support.h"
+#include "DlgSetting.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -62,6 +64,8 @@ BEGIN_MESSAGE_MAP(Cwin_clientDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_BN_CLICKED(IDOK, &Cwin_clientDlg::OnBnClickedOk)
+	ON_BN_CLICKED(IDC_BUTTON5, &Cwin_clientDlg::OnBnClickedButton5)
 END_MESSAGE_MAP()
 
 
@@ -97,7 +101,7 @@ BOOL Cwin_clientDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO:  在此添加额外的初始化代码
-
+	PyExecA("import autorun");
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -150,3 +154,19 @@ HCURSOR Cwin_clientDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+
+
+void Cwin_clientDlg::OnBnClickedOk()
+{
+	// TODO:  在此添加控件通知处理程序代码
+	CDialogEx::OnOK();
+}
+
+
+void Cwin_clientDlg::OnBnClickedButton5()
+{
+	CDlgSetting cds;
+	if (cds.DoModal()==IDOK)
+	{
+	}
+}
