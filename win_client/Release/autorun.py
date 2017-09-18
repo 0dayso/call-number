@@ -32,3 +32,11 @@ def call_number():
 	ret='号码：%s\r\n姓名：%s\r\n身份证：%s\r\n电话：%s'%(_no,nm,_id,phn)
 	return ret
 
+def task_complete():
+	cmnt=__main__.stack__[0]
+	ok=__main__.stack__[1]
+	ret=cln.task_complete(g_win_no,cmnt,ok)
+	if ret:
+		return '已提交！'
+	else:
+		return '提交失败。'

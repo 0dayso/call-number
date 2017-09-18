@@ -8,6 +8,7 @@
 #include "afxdialogex.h"
 #include "python_support.h"
 #include "DlgSetting.h"
+#include "CommentDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -70,6 +71,7 @@ BEGIN_MESSAGE_MAP(Cwin_clientDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON5, &Cwin_clientDlg::OnBnClickedButton5)
 	ON_BN_CLICKED(IDC_BUTTON1, &Cwin_clientDlg::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BUTTON3, &Cwin_clientDlg::OnBnClickedButton3)
+	ON_BN_CLICKED(IDC_BUTTON4, &Cwin_clientDlg::OnBnClickedButton4)
 END_MESSAGE_MAP()
 
 
@@ -202,5 +204,27 @@ void Cwin_clientDlg::OnBnClickedButton1()
 
 void Cwin_clientDlg::OnBnClickedButton3()
 {
-	// TODO:  在此添加控件通知处理程序代码
+	CCommentDlg ccd;
+	if (ccd.DoModal()==IDOK)
+	{
+		PySetStrW(ccd.m_comment.GetBuffer(),0);
+		PySetInt(1, 1);//1 means ok.
+		PyEvalA("autorun.task_complete()");
+		m_info = PyGetStr();
+		UpdateData(FALSE);
+	}
+}
+
+
+void Cwin_clientDlg::OnBnClickedButton4()
+{
+	CCommentDlg ccd;
+	if (ccd.DoModal() == IDOK)
+	{
+		PySetStrW(ccd.m_comment.GetBuffer(), 0);
+		PySetInt(0, 1);//0 means not ok.
+		PyEvalA("autorun.task_complete()");
+		m_info = PyGetStr();
+		UpdateData(FALSE);
+	}
 }

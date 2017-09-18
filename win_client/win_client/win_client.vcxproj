@@ -105,6 +105,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CommentDlg.h" />
     <ClInclude Include="DlgSetting.h" />
     <ClInclude Include="python_support.h" />
     <ClInclude Include="Resource.h" />
@@ -114,6 +115,7 @@
     <ClInclude Include="win_clientDlg.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CommentDlg.cpp" />
     <ClCompile Include="DlgSetting.cpp" />
     <ClCompile Include="python_support.cpp" />
     <ClCompile Include="stdafx.cpp">

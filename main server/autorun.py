@@ -89,8 +89,21 @@ def call_number(win_no,types):
 	return ['','','','']
 svr.reg_fun(call_number)
 
-def task_success(win_no):
-	pass
+def task_complete(win_no,comment,ok):
+	if win_no not in g_sessions:
+		return 0
+	_no=g_sessions[win_no][0]
+	for pc in g_pieces:
+		if pc[0]==_no:
+			pc[6]='成功' if ok else '失败'
+			pc[8]=time_now()
+			pc[9]=comment
+			g_sessions.pop(win_no)
+			save_data()
+			return 1
+	return 0
+
+svr.reg_fun(task_complete)
 
 load_data()
 svr.run(1)
