@@ -43,6 +43,7 @@ def init_new_day():
 		for pc in g_pieces:
 			f.write(json.dumps(pc)+'\n')
 	g_pieces=[]
+	save_data()
 	return 1
 svr.reg_fun(init_new_day)
 

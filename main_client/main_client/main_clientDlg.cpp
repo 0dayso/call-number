@@ -147,8 +147,7 @@ BOOL Cmain_clientDlg::OnInitDialog()
 
 
 	if (!PyExecA("autorun.get_title()"))AfxMessageBox(PyGetStr());
-
-
+	PyExecA("autorun.refresh()");
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
