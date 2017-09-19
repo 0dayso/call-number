@@ -94,7 +94,7 @@ BEGIN_MESSAGE_MAP(Cmain_clientDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
-	ON_BN_CLICKED(IDOK, &Cmain_clientDlg::OnBnClickedOk)
+//	ON_BN_CLICKED(IDOK, &Cmain_clientDlg::OnBnClickedOk)
 	ON_NOTIFY(LVN_COLUMNCLICK, IDC_LIST3, &Cmain_clientDlg::OnColumnclickList3)
 	ON_BN_CLICKED(IDC_BUTTON1, &Cmain_clientDlg::OnBnClickedButton1)
 	ON_NOTIFY(NM_RCLICK, IDC_LIST3, &Cmain_clientDlg::OnRclickList3)
@@ -208,11 +208,11 @@ HCURSOR Cmain_clientDlg::OnQueryDragIcon()
 
 
 
-void Cmain_clientDlg::OnBnClickedOk()
-{
-	PyEvalA("autorun.get_title()");
-	AfxMessageBox(PyGetStr());
-}
+//void Cmain_clientDlg::OnBnClickedOk()
+//{
+//	PyEvalA("autorun.get_title()");
+//	AfxMessageBox(PyGetStr());
+//}
 
 
 void Cmain_clientDlg::OnColumnclickList3(NMHDR *pNMHDR, LRESULT *pResult)

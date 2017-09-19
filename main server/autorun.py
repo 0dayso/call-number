@@ -33,8 +33,10 @@ open('notifyip.dat','w').write(ip)
 cln=rpc.RpcClient(ip,8800)
 
 
-
+refresh_token=time.time()#change if data modified.
 def save_data():
+	global refresh_token
+	refresh_token=time.time()
 	with open('serialize.dat','w') as f:
 		json.dump((g_pieces,g_cnt,g_sessions),f)
 
@@ -75,8 +77,11 @@ def new_number(nm,_id,pn,tp):
 	return 0
 svr.reg_fun(new_number)
 
-def refresh():
-	return g_pieces
+
+def refresh(tk):
+	if tk==refresh_token:
+		return tk,[]
+	return refresh_token,g_pieces
 svr.reg_fun(refresh)
 
 #win client service

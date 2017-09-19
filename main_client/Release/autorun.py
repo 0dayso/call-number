@@ -21,8 +21,13 @@ def new_number():
     cln.new_number(nm,_id,pn,tp)
     return 0
 
+refresh_token=0
 def refresh():
-    pcs=cln.refresh()
+    global refresh_token
+    tk,pcs=cln.refresh(refresh_token)
+    if tk==refresh_token:
+        return
+    refresh_token=tk
     __main__.exe_fun__['clear_list']()
     fun_set=__main__.exe_fun__['list_set_item']
     for r,pc in enumerate(pcs):
