@@ -1,4 +1,4 @@
-import winsound
+﻿import winsound
 import time
 import threading
 import os
@@ -52,6 +52,8 @@ svr=rpc.RpcSvr('0.0.0.0',8800)
 txt_queue=['']*len(shps)
 def add_notice(uid,winid):
 	global txt_queue
+	uid=int(uid)
+	winid=int(winid)
 	s='请%03d号客户到%d号窗口办理业务'%(uid,winid)
 	if s in txt_queue:
 		voice_queue.append((uid,winid))

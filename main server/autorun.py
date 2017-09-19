@@ -25,6 +25,14 @@ g_sessions=dict()
 import rpc
 svr=rpc.RpcSvr('0.0.0.0',8900)
 
+try:
+	ip=open('notifyip.dat').read()
+except:
+	ip=input('notify ip:')
+open('notifyip.dat','w').write(ip)
+cln=rpc.RpcClient(ip,8800)
+
+
 
 def save_data():
 	with open('serialize.dat','w') as f:
@@ -75,6 +83,8 @@ svr.reg_fun(refresh)
 def call_number(win_no,types):
 	global g_pieces
 	if win_no in g_sessions:
+		u_id=g_sessions[win_no][0]
+		cln.add_notice(u_id,win_no)
 		return g_sessions[win_no]
 	types=types.upper()
 	for pc in g_pieces:
@@ -85,6 +95,7 @@ def call_number(win_no,types):
 			ret=pc[0],pc[2],pc[3],pc[4]
 			g_sessions[win_no]=ret
 			save_data()
+			cln.add_notice(pc[0],win_no)
 			return ret
 	return ['','','','']
 svr.reg_fun(call_number)

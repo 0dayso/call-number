@@ -309,3 +309,4 @@ main server/tmp.txt
 main_client/Release/main_client.exe
 win_client/Release/win_client.exe
 win_client/Release/__pycache__/autorun.cpython-34.pyc
+notify server/__pycache__/autorun.cpython-34.pyc
