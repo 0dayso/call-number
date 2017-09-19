@@ -80,6 +80,7 @@ END_MESSAGE_MAP()
 Cmain_clientDlg::Cmain_clientDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(Cmain_clientDlg::IDD, pParent)
 {
+	m_allow_auto_refresh = true;
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
@@ -99,6 +100,7 @@ BEGIN_MESSAGE_MAP(Cmain_clientDlg, CDialogEx)
 	ON_NOTIFY(NM_RCLICK, IDC_LIST3, &Cmain_clientDlg::OnRclickList3)
 	ON_BN_CLICKED(IDC_BUTTON2, &Cmain_clientDlg::OnBnClickedButton2)
 	ON_BN_CLICKED(IDC_BUTTON3, &Cmain_clientDlg::OnBnClickedButton3)
+	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 
@@ -139,7 +141,7 @@ BOOL Cmain_clientDlg::OnInitDialog()
 	dwStyle |= LVS_EX_FULLROWSELECT;//选中某行使整行高亮（只适用与report风格的listctrl）
 	dwStyle |= LVS_EX_GRIDLINES;//网格线（只适用与report风格的listctrl）
 	m_list.SetExtendedStyle(dwStyle); //设置扩展风格
-
+	SetTimer(1, 1000, 0);
 	if (!PyExecA("import autorun"))AfxMessageBox(PyGetStr());
 	REG_EXE_FUN(list_add_column, "#lSl", "");
 	REG_EXE_FUN(clear_list, "#", "");
@@ -243,12 +245,14 @@ void Cmain_clientDlg::OnRclickList3(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
 	if (pNMItemActivate->iItem == -1)return;
+	m_allow_auto_refresh = false;
 	CMenu Menu;
 	Menu.CreatePopupMenu();
 	Menu.AppendMenu(MF_STRING, 1, _T("打印号票"));
 	CPoint pt;
 	::GetCursorPos(&pt);
 	int sel = (int)Menu.TrackPopupMenuEx(TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_RETURNCMD, pt.x, pt.y, this, nullptr);
+	m_allow_auto_refresh = true;
 	if (sel == 1)
 	{
 		PyExecA("autorun.print_ticket()");
@@ -270,4 +274,14 @@ void Cmain_clientDlg::OnBnClickedButton3()
 		PyExecA("autorun.init_new_day()");
 		PyExecA("autorun.refresh()");
 	}
+}
+
+
+void Cmain_clientDlg::OnTimer(UINT_PTR nIDEvent)
+{
+	if (m_allow_auto_refresh)
+	{
+		PyExecA("autorun.refresh()");
+	}
+	CDialogEx::OnTimer(nIDEvent);
 }

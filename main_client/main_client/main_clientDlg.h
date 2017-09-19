@@ -23,7 +23,7 @@ public:
 // 实现
 protected:
 	HICON m_hIcon;
-
+	bool m_allow_auto_refresh;
 	// 生成的消息映射函数
 	virtual BOOL OnInitDialog();
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
@@ -38,4 +38,5 @@ public:
 	afx_msg void OnRclickList3(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedButton2();
 	afx_msg void OnBnClickedButton3();
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 };
