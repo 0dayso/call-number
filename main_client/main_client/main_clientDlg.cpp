@@ -234,7 +234,7 @@ void Cmain_clientDlg::OnBnClickedButton1()
 		PySetStrW(cad.m_type.GetBuffer(), 3);
 		PyExecA("autorun.new_number()");
 		PyExecA("autorun.refresh()");
-		PyExecA("autorun.print_number()");
+		PyExecA("autorun.print_ticket()");
 	}
 }
 
@@ -251,7 +251,7 @@ void Cmain_clientDlg::OnRclickList3(NMHDR *pNMHDR, LRESULT *pResult)
 	int sel = (int)Menu.TrackPopupMenuEx(TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_RETURNCMD, pt.x, pt.y, this, nullptr);
 	if (sel == 1)
 	{
-		PyExecA("autorun.print_number()");
+		PyExecA("autorun.print_ticket()");
 	}
 	*pResult = 0;
 }
