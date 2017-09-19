@@ -13,14 +13,20 @@ class CErr(object):
 		pass
 import sys
 sys.stderr=CErr()
-print('客户通知服务正在运行...')
+print('通知服务正在运行...')
 #voice service
 voice_queue=[]#append (uid,winid) to this queue,to play notify sound.
+last_play_time=0
 def sound_routine():
+	global last_play_time
 	while True:
-		if not voice_queue:
+		if not voice_queue:#do idle loop when no voice task.
 			time.sleep(0.3)
 			continue
+		tm=time.time()
+		if tm-last_play_time>10:
+			winsound.PlaySound(cwd+'\\wav\\pre.wav',winsound.SND_FILENAME)
+		last_play_time=tm
 		uid,winid=voice_queue.pop(0)
 		s='%03d'%(uid)
 		winsound.PlaySound(cwd+'\\wav\\q.wav',winsound.SND_FILENAME)
@@ -37,8 +43,6 @@ ppt=office.PowerPoint(1)
 pre=ppt.open(cwd+'\\1.pptx')
 sli=pre.slides[0]
 shps=sli.shapes
-for sp in shps:
-	sp.text=''
 pre.run()
 
 #rpc service
